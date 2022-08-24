@@ -1,0 +1,16 @@
+$primary-color: #901C1C;
+$secondary-color: #D3573C;
+$tertiary-color: #525252;
+$quaternary-color: #FAFAFA;
+$primary-background-color: #FFFFFF;
+$secondary-background-color: #FAFAFA;
+
+@mixin btn-colors {
+    background-color: $primary-color;
+    color: white;
+}
+
+@mixin btn-colors-hover {
+    background-color: $secondary-color;
+    color: black;
+}
