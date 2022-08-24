@@ -5,6 +5,9 @@ $quaternary-color: #FAFAFA;
 $primary-background-color: #FFFFFF;
 $secondary-background-color: #FAFAFA;
 
+$tablet-max-width: 1024px;
+
+
 @mixin btn-colors {
     background-color: $primary-color;
     color: white;
@@ -13,4 +16,10 @@ $secondary-background-color: #FAFAFA;
 @mixin btn-colors-hover {
     background-color: $secondary-color;
     color: black;
+}
+
+@mixin screen-max($max) {
+    @media screen and (max-width: $max) {
+        @content
+    }
 }
