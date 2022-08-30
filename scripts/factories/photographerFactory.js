@@ -8,7 +8,7 @@ function photographerFactory(data) {
 
         const article = document.createElement('article');
 
-        article.innerHTML = `<a href="photographer.html">
+        article.innerHTML = `<a href="photographer.html?userid=${id}">
                                 <img src="${picture}" alt="${name}" />
                                 <h2>${name}</h2>
                             </a>
