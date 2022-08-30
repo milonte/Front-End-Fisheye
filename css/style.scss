@@ -11,6 +11,27 @@ body {
         justify-content: space-between;
         align-items: center;
         height: 90px;
+
+        a {
+            position: relative;
+
+            &:focus {
+                &::after {
+                    content: " ";
+                    background: config.$primary-color;
+                    width: 200px;
+                    height: 5px;
+                    position: absolute;
+                    top: 50px;
+                    left: 100px;
+                }
+            }
+
+            .logo {
+                height: 50px;
+                margin-left: 100px;
+            }
+        }
     }
 
     h1 {
@@ -18,10 +39,7 @@ body {
         margin-right: 100px;
     }
 
-    .logo {
-        height: 50px;
-        margin-left: 100px;
-    }
+
 
     .photographer_section {
         display: grid;
@@ -53,6 +71,12 @@ body {
                 align-items: center;
                 overflow: hidden;
                 text-decoration: none;
+
+                &:focus {
+                    img {
+                        border: 5px solid config.$primary-color;
+                    }
+                }
 
                 h2 {
                     margin-bottom: 0;
