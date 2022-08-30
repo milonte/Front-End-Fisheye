@@ -8,8 +8,9 @@ function photographerFactory(data) {
 
         const article = document.createElement('article');
 
-        article.innerHTML = `<a href="photographer.html?userid=${id}">
-                                <img src="${picture}" alt="${name} width="320px" height="240px" />
+        article.innerHTML = `<a href="photographer.html?userid=${id}" role="link"
+                                aria-label="${name}. ${city} ${country}. ${tagline}. ${price} € par jour">
+                                <img alt="${name}" src="${picture}" width="320px" height="240px" />
                                 <h2>${name}</h2>
                             </a>
                             <aside>
