@@ -1,0 +1,119 @@
+@use 'config';
+@import url("photographer.css");
+
+body {
+    font-family: "DM Sans", sans-serif;
+    margin: 0;
+
+    header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        height: 90px;
+
+        a {
+            position: relative;
+
+            &:focus {
+                &::after {
+                    content: " ";
+                    background: config.$primary-color;
+                    width: 200px;
+                    height: 5px;
+                    position: absolute;
+                    top: 50px;
+                    left: 100px;
+                }
+            }
+
+            .logo {
+                height: 50px;
+                margin-left: 100px;
+            }
+        }
+    }
+
+    h1 {
+        color: config.$primary-color;
+        margin-right: 100px;
+    }
+
+
+
+    .photographer_section {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 70px;
+        margin-top: 100px;
+
+        @include config.screen-max(config.$tablet-max-width) {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        article {
+            justify-self: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+            @include config.screen-max(config.$tablet-max-width) {
+                flex-direction: row;
+                justify-content: space-around;
+            }
+
+            a {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                overflow: hidden;
+                text-decoration: none;
+
+                &:focus {
+                    img {
+                        border: 5px solid config.$primary-color;
+                    }
+                }
+
+                h2 {
+                    margin-bottom: 0;
+                    color: config.$secondary-color;
+                    font-size: 36px;
+                }
+
+                img {
+                    height: 200px;
+                    width: 200px;
+                    border-radius: 100px;
+                    object-fit: cover;
+
+                }
+            }
+        }
+
+        aside {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            p {
+                margin: 0;
+            }
+
+            .city {
+                color: config.$primary-color;
+                font-size: 1.2rem;
+            }
+
+            .price {
+                color: config.$tertiary-color;
+            }
+        }
+    }
+
+
+}

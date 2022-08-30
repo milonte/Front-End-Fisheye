@@ -1,0 +1,25 @@
+$primary-color: #901C1C;
+$secondary-color: #D3573C;
+$tertiary-color: #525252;
+$quaternary-color: #FAFAFA;
+$primary-background-color: #FFFFFF;
+$secondary-background-color: #FAFAFA;
+
+$tablet-max-width: 1024px;
+
+
+@mixin btn-colors {
+    background-color: $primary-color;
+    color: white;
+}
+
+@mixin btn-colors-hover {
+    background-color: $secondary-color;
+    color: black;
+}
+
+@mixin screen-max($max) {
+    @media screen and (max-width: $max) {
+        @content
+    }
+}
