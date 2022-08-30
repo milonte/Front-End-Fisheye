@@ -27,5 +27,11 @@ class PhotographerApi extends Api {
         const response = await this.get()
         return response.photographers
     }
+
+    async getPhotographer(id) {
+        const response = await this.get()
+        const photographer = response.photographers.find(photo => photo.id == id)
+        return photographer
+    }
 }
 

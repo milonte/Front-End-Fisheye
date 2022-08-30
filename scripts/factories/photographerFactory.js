@@ -1,24 +1,42 @@
-function photographerFactory(data) {
+function photographerFactory(page, data) {
     const { name, id, city, country, tagline, price, portrait } = data;
 
     const picture = `assets/photographers/${portrait}`;
 
+    const article = document.createElement('article');
+
+    let card = ``;
+
+    if ("home" == page) {
+        card = `<a href="photographer.html?userid=${id}" role="link"
+                    aria-label="${name}. ${city} ${country}. ${tagline}. ${price} € par jour">
+                    <img alt="${name}" src="${picture}" width="320px" height="240px" />
+                    <h2>${name}</h2>
+                </a>
+                <aside>
+                    <p class="city">${city}, ${country}</p>
+                    <p class="tagline">${tagline}</p>
+                    <p class="price">${price}€/jour</p>
+                </aside>`;
+
+    } else if ("photographer" == page) {
+        card = `
+                <img alt="${name}" src="${picture}" width="320px" height="240px" />
+                <h2>${name}</h2>
+                <aside>
+                    <p class="city">${city}, ${country}</p>
+                    <p class="tagline">${tagline}</p>
+                    <p class="price">${price}€/jour</p>
+                </aside>`
+    } else {
+        card = `<div>
+                Un erreure est survenue.
+                < a href="index.html"> Retour à l'accueuil</a>
+                </div >`
+    }
+
     function getUserCardDOM() {
-
-
-        const article = document.createElement('article');
-
-        article.innerHTML = `<a href="photographer.html?userid=${id}" role="link"
-                                aria-label="${name}. ${city} ${country}. ${tagline}. ${price} € par jour">
-                                <img alt="${name}" src="${picture}" width="320px" height="240px" />
-                                <h2>${name}</h2>
-                            </a>
-                            <aside>
-                                <p class="city">${city}, ${country}</p>
-                                <p class="tagline">${tagline}</p>
-                                <p class="price">${price}€/jour</p>
-                            </aside>`;
-
+        article.innerHTML = card;
 
         return (article);
     }
