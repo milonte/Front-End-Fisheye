@@ -33,5 +33,17 @@ class PhotographerApi extends Api {
         const photographer = response.photographers.find(photo => photo.id == id)
         return photographer
     }
+
 }
 
+class MediaApi extends Api {
+    constructor(url) {
+        super(url)
+    }
+
+    async getMedias(id) {
+        const response = await this.get()
+        const medias = response.media.filter(med => med.photographerId == id)
+        return medias
+    }
+}
