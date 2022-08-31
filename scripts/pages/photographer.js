@@ -1,7 +1,10 @@
 let userId = new URL(window.location).searchParams.get('userid');
+const mainSection = document.querySelector("main");
+const headerSection = document.querySelector("header");;
 const photographersSection = document.querySelector(".photograph-header");
 const mediaSection = document.querySelector(".photograph-medias");
 const mediaLightbox = document.getElementById("medias-lightbox");
+const formModal = document.getElementById("contact_modal");
 
 async function getPhotographer(photographerId = null) {
 
@@ -53,7 +56,9 @@ function displayError() {
 }
 
 async function displayLightBox(media) {
-    mediaLightbox.style.display = "block";
+
+    mediaLightbox.setAttribute("aria-hidden", "false");
+    enableFocusMainElements(false)
     const mediaLightboxDOM = media.getMediaLightboxDOM();
 
     mediaLightbox.appendChild(mediaLightboxDOM);
@@ -63,7 +68,10 @@ async function displayLightBox(media) {
 }
 
 function closeLightBox() {
-    mediaLightbox.style.display = "none";
+
+    mediaLightbox.setAttribute("aria-hidden", "true");
+    enableFocusMainElements()
+
     clearLightBox();
 
     document.removeEventListener("keydown", keyboardEvent)
@@ -122,6 +130,35 @@ function keyboardEvent(event) {
                 currentMedia.pause()
             }
         }
+    }
+}
+
+function enableFocusMainElements(bool = true) {
+
+    const headerLink = headerSection.querySelector('a');
+    const contactBtn = document.querySelector(".contact_button");
+    const mediaCards = document.querySelectorAll("article a");
+
+    if (bool) {
+        headerLink.removeAttribute("aria-disabled");
+        headerLink.removeAttribute("tabindex", "-1");
+        contactBtn.removeAttribute("aria-disabled");
+        contactBtn.removeAttribute("tabindex", "-1");
+        mediaCards.forEach(card => {
+            card.removeAttribute("aria-disabled");
+            card.removeAttribute("tabindex", "-1");
+        })
+        document.querySelector("body").style.overflow = "scroll";
+    } else {
+        headerLink.setAttribute("aria-disabled", "true");
+        headerLink.setAttribute("tabindex", "-1");
+        contactBtn.setAttribute("aria-disabled", "true");
+        contactBtn.setAttribute("tabindex", "-1");
+        mediaCards.forEach(card => {
+            card.setAttribute("aria-disabled", "true");
+            card.setAttribute("tabindex", "-1");
+        })
+        document.querySelector("body").style.overflow = "hidden";
     }
 }
 

@@ -33,6 +33,8 @@ class mediaFactory {
             media = document.createElement("img");
         } else if ("video" == this._mediaType) {
             media = document.createElement("video");
+            media.setAttribute("aria-disabled", "true");
+            media.setAttribute("tabindex", "-1");
         }
 
         media.setAttribute("src", this._mediaUrl);
@@ -61,21 +63,21 @@ class mediaFactory {
         modal.classList.add("modal");
 
         const closeBtn = document.createElement("button");
-        closeBtn.classList.add("lightbox-close");
+        closeBtn.classList.add("lightbox-btn", "lightbox-close");
         closeBtn.innerHTML = `<i class="fa-solid fa-2x fa-close"></i>`;
         closeBtn.addEventListener("click", () => {
             closeLightBox();
         })
 
         const prevBtn = document.createElement("button");
-        prevBtn.classList.add("lightbox-prev");
+        prevBtn.classList.add("lightbox-btn", "lightbox-prev");
         prevBtn.innerHTML = `<i class="fa-solid fa-2x fa-chevron-left"></i>`;
         prevBtn.addEventListener("click", () => {
             changeLightBox("prev");
         })
 
         const nextBtn = document.createElement("button");
-        nextBtn.classList.add("lightbox-prev");
+        nextBtn.classList.add("lightbox-btn", "lightbox-next");
         nextBtn.innerHTML = `<i class="fa-solid fa-2x fa-chevron-right"></i>`;
         nextBtn.addEventListener("click", () => {
             changeLightBox("next");
@@ -86,7 +88,6 @@ class mediaFactory {
             media = document.createElement("img");
         } else if ("video" == this._mediaType) {
             media = document.createElement("video");
-            media.setAttribute("tabindex", "-1");
             media.setAttribute("controls", true);
         }
 
@@ -96,10 +97,15 @@ class mediaFactory {
         media.setAttribute("witdh", "300px");
         media.setAttribute("height", "300px");
 
-        modal.appendChild(closeBtn);
+        const title = document.createElement("p");
+        title.classList.add("title");
+        title.innerHTML = this._title;
+
         modal.appendChild(prevBtn);
-        modal.appendChild(nextBtn);
         modal.appendChild(media);
+        modal.appendChild(closeBtn);
+        modal.appendChild(nextBtn);
+        modal.appendChild(title);
 
         return modal;
     }
