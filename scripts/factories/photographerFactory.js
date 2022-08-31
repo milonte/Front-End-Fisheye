@@ -21,16 +21,17 @@ function photographerFactory(page, data) {
 
     } else if ("photographer" == page) {
         card = `
-                <img alt="${name}" src="${picture}" width="320px" height="240px" />
-                <h2>${name}</h2>
-                <aside>
-                    <p class="city">${city}, ${country}</p>
-                    <p class="tagline">${tagline}</p>
-                    <p class="price">${price}€/jour</p>
-                </aside>`
+            <div class="infos">
+                <h1>${name}</h2>
+                <p class="city">${city}, ${country}</p>
+                <p class="tagline">${tagline}</p>
+            </div>
+            <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+            <img alt="${name}" src="${picture}" width="320px" height="240px" />
+        `
     } else {
         card = `<div>
-                Un erreure est survenue.
+                Un erreur est survenue.
                 < a href="index.html"> Retour à l'accueuil</a>
                 </div >`
     }
