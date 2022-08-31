@@ -58,14 +58,18 @@ async function displayLightBox(media) {
 
     mediaLightbox.appendChild(mediaLightboxDOM);
 
+    document.addEventListener("keydown", keyboardEvent)
+
 }
 
 function closeLightBox() {
     mediaLightbox.style.display = "none";
     clearLightBox();
+
+    document.removeEventListener("keydown", keyboardEvent)
 }
 
-async function changeLightBox(currentMedia, direction) {
+async function changeLightBox(direction) {
 
     let directionIndex = 0;
 
@@ -76,7 +80,9 @@ async function changeLightBox(currentMedia, direction) {
     }
     const allMedias = await getMedias(userId);
 
-    let currentIndex = allMedias.medias.findIndex((media) => media.id == currentMedia._id);
+    let currentMediaId = document.querySelector(".current-media").attributes.id.value.split("_")[1];
+
+    let currentIndex = allMedias.medias.findIndex((media) => media.id == currentMediaId);
     let targetIndex = currentIndex + directionIndex;
 
     if (targetIndex > allMedias.medias.length - 1) {
@@ -84,7 +90,6 @@ async function changeLightBox(currentMedia, direction) {
     } else if (targetIndex < 0) {
         targetIndex = allMedias.medias.length - 1;
     }
-
 
     const targetMediaModel = new mediaFactory(allMedias.medias[targetIndex]);
     const mediaLightboxDOM = targetMediaModel.getMediaLightboxDOM();
@@ -94,6 +99,30 @@ async function changeLightBox(currentMedia, direction) {
 
 function clearLightBox() {
     mediaLightbox.innerHTML = "";
+}
+
+function keyboardEvent(event) {
+
+    const currentMedia = document.querySelector(".current-media");
+    if ("ArrowLeft" == event.key) {
+        changeLightBox("prev")
+    } else if ("ArrowRight" == event.key) {
+        changeLightBox("next")
+    } else if ("Escape" == event.key) {
+        closeLightBox();
+    }
+
+    if ("Enter" == event.key) {
+        event.preventDefault();
+        if ("VIDEO" == currentMedia.tagName) {
+            if (currentMedia.paused) {
+
+                currentMedia.play()
+            } else {
+                currentMedia.pause()
+            }
+        }
+    }
 }
 
 async function init() {

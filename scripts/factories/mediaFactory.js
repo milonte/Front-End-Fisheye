@@ -71,14 +71,14 @@ class mediaFactory {
         prevBtn.classList.add("lightbox-prev");
         prevBtn.innerHTML = `<i class="fa-solid fa-2x fa-chevron-left"></i>`;
         prevBtn.addEventListener("click", () => {
-            changeLightBox(this, "prev");
+            changeLightBox("prev");
         })
 
         const nextBtn = document.createElement("button");
         nextBtn.classList.add("lightbox-prev");
         nextBtn.innerHTML = `<i class="fa-solid fa-2x fa-chevron-right"></i>`;
         nextBtn.addEventListener("click", () => {
-            changeLightBox(this, "next");
+            changeLightBox("next");
         })
 
         let media = ``;
@@ -88,9 +88,10 @@ class mediaFactory {
             media = document.createElement("video");
             media.setAttribute("tabindex", "-1");
             media.setAttribute("controls", true);
-
         }
 
+        media.setAttribute("id", `media_${this._id}`)
+        media.classList.add("current-media");
         media.setAttribute("src", this._mediaUrl);
         media.setAttribute("witdh", "300px");
         media.setAttribute("height", "300px");
