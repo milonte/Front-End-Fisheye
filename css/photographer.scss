@@ -1,7 +1,70 @@
 @use 'config';
 
-#contact_modal {
+#contact_modal,
+#medias-lightbox {
     display: none;
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+#contact_modal {
+
+    .modal {
+        border-radius: 5px;
+        background-color: #DB8876;
+        width: 50vw;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        padding: 35px;
+        margin: auto;
+
+        header {
+            justify-content: space-between;
+            width: 100%;
+
+            img {
+                cursor: pointer;
+            }
+
+            h2 {
+                font-size: 64px;
+                font-weight: normal;
+                text-align: center;
+            }
+        }
+
+        form {
+            display: flex;
+            width: 100%;
+            flex-direction: column;
+            align-items: flex-start;
+
+            label {
+                color: #312E2E;
+                font-size: 36px;
+            }
+
+            div {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                align-items: self-start;
+                margin-bottom: 26px;
+            }
+
+            input {
+                width: 100%;
+                height: 68px;
+                border: none;
+                border-radius: 5px;
+            }
+        }
+    }
 }
 
 .photograph-header {
@@ -121,6 +184,7 @@
     }
 }
 
+
 .contact_button {
     @include config.btn-colors;
     font-size: 20px;
@@ -131,59 +195,4 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-}
-
-.modal {
-    border-radius: 5px;
-    background-color: #DB8876;
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: 35px;
-    margin: auto;
-
-    header {
-        justify-content: space-between;
-        width: 100%;
-
-        img {
-            cursor: pointer;
-        }
-
-        h2 {
-            font-size: 64px;
-            font-weight: normal;
-            text-align: center;
-        }
-    }
-}
-
-
-form {
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    align-items: flex-start;
-
-    label {
-        color: #312E2E;
-        font-size: 36px;
-    }
-
-    div {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        align-items: self-start;
-        margin-bottom: 26px;
-    }
-
-    input {
-        width: 100%;
-        height: 68px;
-        border: none;
-        border-radius: 5px;
-    }
 }

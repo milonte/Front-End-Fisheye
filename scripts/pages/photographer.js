@@ -1,8 +1,7 @@
-//Mettre le code JavaScript lié à la page photographer.html
-
 let userId = new URL(window.location).searchParams.get('userid');
 const photographersSection = document.querySelector(".photograph-header");
 const mediaSection = document.querySelector(".photograph-medias");
+const mediaLightbox = document.getElementById("medias-lightbox");
 
 async function getPhotographer(photographerId = null) {
 
@@ -51,6 +50,50 @@ function displayError() {
         <a href="index.html">Retour à l'accueuil</a>
     `
     photographersSection.appendChild(divElement);
+}
+
+async function displayLightBox(media) {
+    mediaLightbox.style.display = "block";
+    const mediaLightboxDOM = media.getMediaLightboxDOM();
+
+    mediaLightbox.appendChild(mediaLightboxDOM);
+
+}
+
+function closeLightBox() {
+    mediaLightbox.style.display = "none";
+    clearLightBox();
+}
+
+async function changeLightBox(currentMedia, direction) {
+
+    let directionIndex = 0;
+
+    if ("prev" == direction) {
+        directionIndex = -1;
+    } else if ("next == direction") {
+        directionIndex = 1;
+    }
+    const allMedias = await getMedias(userId);
+
+    let currentIndex = allMedias.medias.findIndex((media) => media.id == currentMedia._id);
+    let targetIndex = currentIndex + directionIndex;
+
+    if (targetIndex > allMedias.medias.length - 1) {
+        targetIndex = 0;
+    } else if (targetIndex < 0) {
+        targetIndex = allMedias.medias.length - 1;
+    }
+
+
+    const targetMediaModel = new mediaFactory(allMedias.medias[targetIndex]);
+    const mediaLightboxDOM = targetMediaModel.getMediaLightboxDOM();
+    clearLightBox();
+    mediaLightbox.appendChild(mediaLightboxDOM);
+}
+
+function clearLightBox() {
+    mediaLightbox.innerHTML = "";
 }
 
 async function init() {
