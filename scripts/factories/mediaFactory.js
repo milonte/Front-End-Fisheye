@@ -63,6 +63,7 @@ class mediaFactory {
         modal.classList.add("modal");
 
         const closeBtn = document.createElement("button");
+        closeBtn.setAttribute("tabindex", "3");
         closeBtn.classList.add("lightbox-btn", "lightbox-close");
         closeBtn.innerHTML = `<i class="fa-solid fa-2x fa-close"></i>`;
         closeBtn.addEventListener("click", () => {
@@ -70,6 +71,7 @@ class mediaFactory {
         })
 
         const prevBtn = document.createElement("button");
+        prevBtn.setAttribute("tabindex", "1");
         prevBtn.classList.add("lightbox-btn", "lightbox-prev");
         prevBtn.innerHTML = `<i class="fa-solid fa-2x fa-chevron-left"></i>`;
         prevBtn.addEventListener("click", () => {
@@ -77,6 +79,7 @@ class mediaFactory {
         })
 
         const nextBtn = document.createElement("button");
+        nextBtn.setAttribute("tabindex", "2");
         nextBtn.classList.add("lightbox-btn", "lightbox-next");
         nextBtn.innerHTML = `<i class="fa-solid fa-2x fa-chevron-right"></i>`;
         nextBtn.addEventListener("click", () => {
