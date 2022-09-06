@@ -67,6 +67,19 @@ async function displayLightBox(media) {
 
 }
 
+async function displayLikes(photographer, medias) {
+    const div = document.createElement("div");
+    let likes = 0;
+
+    medias.forEach(media => {
+        likes += media.likes;
+    })
+
+    document.querySelector(".photograph-likes").innerHTML = likes;
+    document.querySelector(".photograph-price").innerHTML = photographer.price;
+
+}
+
 function closeLightBox() {
 
     mediaLightbox.setAttribute("aria-hidden", "true");
@@ -168,6 +181,7 @@ async function init() {
         displayError();
     } else {
         const { photographer } = await getPhotographer(userId);
+        const { medias } = await getMedias(userId);
 
         if (!photographer) {
             displayError();
@@ -175,6 +189,7 @@ async function init() {
             const { medias } = await getMedias(userId);
 
             displayPhotographer(photographer);
+            displayLikes(photographer, medias);
 
             medias.forEach(media => {
                 displayMedia(media);

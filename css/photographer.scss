@@ -261,6 +261,21 @@ body {
     }
 }
 
+.photograph-stats {
+    position: fixed;
+    justify-content: space-between;
+    bottom: 0;
+    right: 50px;
+    background: config.$secondary-color;
+    border-radius: 5px 5px 0 0;
+    font-size: 1.5rem;
+    padding: 20px;
+
+    .fa-solid {
+        margin-right: 40px;
+    }
+}
+
 .contact_button {
     @include config.btn-colors;
     font-size: 20px;
