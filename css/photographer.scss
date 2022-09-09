@@ -176,7 +176,6 @@ body {
             }
         }
 
-
         aside {
             min-width: 300px;
             width: 80%;
@@ -192,7 +191,22 @@ body {
             .title {
                 flex: 65%;
             }
+
+            .likes-btn {
+                text-decoration: none;
+                background: transparent;
+                border: none;
+                font-size: 1.5rem;
+                color: config.$primary-color;
+            }
+
+            .liked {
+                .hearth {
+                    font-size: 2rem;
+                }
+            }
         }
+
     }
 }
 

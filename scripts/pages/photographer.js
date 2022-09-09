@@ -68,7 +68,6 @@ async function displayLightBox(media) {
 }
 
 async function displayLikes(photographer, medias) {
-    const div = document.createElement("div");
     let likes = 0;
 
     medias.forEach(media => {
@@ -78,6 +77,13 @@ async function displayLikes(photographer, medias) {
     document.querySelector(".photograph-likes").innerHTML = likes;
     document.querySelector(".photograph-price").innerHTML = photographer.price;
 
+}
+
+
+function updateMediaLikes(event) {
+    console.log(event.target)
+
+    /* event.target.value = 104; */
 }
 
 function closeLightBox() {
@@ -151,6 +157,7 @@ function enableFocusMainElements(bool = true) {
     const headerLink = headerSection.querySelector('a');
     const contactBtn = document.querySelector(".contact_button");
     const mediaCards = document.querySelectorAll("article a");
+    const likedBtns = document.querySelectorAll(".likes-btn");
 
     if (bool) {
         headerLink.removeAttribute("aria-disabled");
@@ -161,6 +168,10 @@ function enableFocusMainElements(bool = true) {
             card.removeAttribute("aria-disabled");
             card.removeAttribute("tabindex", "-1");
         })
+        likedBtns.forEach(btn => {
+            btn.removeAttribute("aria-disabled", "true");
+            btn.removeAttribute("tabindex", "-1");
+        })
         document.querySelector("body").style.overflow = "scroll";
     } else {
         headerLink.setAttribute("aria-disabled", "true");
@@ -170,6 +181,10 @@ function enableFocusMainElements(bool = true) {
         mediaCards.forEach(card => {
             card.setAttribute("aria-disabled", "true");
             card.setAttribute("tabindex", "-1");
+        })
+        likedBtns.forEach(btn => {
+            btn.setAttribute("aria-disabled", "true");
+            btn.setAttribute("tabindex", "-1");
         })
         document.querySelector("body").style.overflow = "hidden";
     }
@@ -196,6 +211,22 @@ async function init() {
             });
         }
     }
+
+    document.querySelectorAll(".likes-btn").forEach(btn => {
+        btn.addEventListener("click", (event) => {
+            if (btn.classList.contains("liked")) {
+                btn.value--;
+                btn.classList.remove('liked');
+                document.querySelector(".photograph-likes").innerHTML--;
+            } else {
+                btn.value++;
+                btn.classList.add('liked');
+                document.querySelector(".photograph-likes").innerHTML++;
+            }
+            btn.querySelector(".likes").innerHTML = btn.value;
+        })
+
+    });
 };
 
 init();

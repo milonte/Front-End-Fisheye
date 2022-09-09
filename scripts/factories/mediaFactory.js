@@ -47,10 +47,10 @@ class mediaFactory {
         const aside = document.createElement("aside");
         aside.innerHTML = ` 
                             <span class="title">${this._title}</span>
-                            <div class="likes-container">
+                            <button class="likes-btn" value="${this._likes}">
                                 <span class="likes">${this._likes}</span>
                                 <span class="hearth"><i class="fa-solid fa-heart"></i></span>
-                            </div>
+                            </button>
                             `
 
         article.appendChild(aside);
