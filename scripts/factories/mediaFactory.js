@@ -15,9 +15,13 @@ class mediaFactory {
             this._mediaUrl = `assets/videos/${data.video}`;
             this._mediaType = "video";
         }
-
     }
 
+    /**
+     * Get media card template
+     * Differences between images / videos
+     * @returns {HTMLElement} 
+     */
     getMediaCardDOM() {
         const article = document.createElement('article');
         const link = document.createElement("a");
@@ -58,6 +62,10 @@ class mediaFactory {
         return article;
     }
 
+    /**
+     * Get Medai lightbox modal template
+     * @returns {HTMLElement}
+     */
     getMediaLightboxDOM() {
         const modal = document.createElement("div");
         modal.classList.add("modal");

@@ -1,10 +1,6 @@
 let userId = new URL(window.location).searchParams.get('userid');
-const mainSection = document.querySelector("main");
 const headerSection = document.querySelector("header");;
-const photographersSection = document.querySelector(".photograph-header");
-const mediaSection = document.querySelector(".photograph-medias");
-const mediaLightbox = document.getElementById("medias-lightbox");
-const formModal = document.getElementById("contact_modal");
+
 const filtersSelect = document.getElementById("filters-select");
 filtersSelect.value = "popular";
 
@@ -34,129 +30,16 @@ async function getMedias(photographerId = null, sortBy = "popular") {
     })
 }
 
+/**
+ * Display Photographer Header
+ * @param {Object} photographer 
+ */
 async function displayPhotographer(photographer) {
-
     const photographerModel = photographerFactory("photographer", photographer);
     const userCardDOM = photographerModel.getUserCardDOM();
     photographersSection.appendChild(userCardDOM);
-
 };
 
-async function displayMedia(media) {
-    const mediaModel = new mediaFactory(media);
-    const mediaCardDOM = mediaModel.getMediaCardDOM();
-    mediaSection.appendChild(mediaCardDOM);
-}
-
-function clearMedias() {
-    mediaSection.innerHTML = "";
-}
-
-async function filterMedias() {
-    const { medias } = await (getMedias(userId, filtersSelect.value));
-    clearMedias();
-    medias.forEach(media => {
-        displayMedia(media)
-    })
-}
-
-function displayError() {
-    const divElement = document.createElement("div");
-    divElement.innerHTML = `
-        Un erreur est survenue.
-        <a href="index.html">Retour à l'accueuil</a>
-    `
-    photographersSection.appendChild(divElement);
-}
-
-async function displayLightBox(media) {
-
-    mediaLightbox.setAttribute("aria-hidden", "false");
-    enableFocusMainElements(false)
-
-    const mediaLightboxDOM = media.getMediaLightboxDOM();
-    mediaLightbox.appendChild(mediaLightboxDOM);
-
-    document.addEventListener("keydown", keyboardEvent)
-
-}
-
-async function displayLikes(photographer, medias) {
-    let likes = 0;
-
-    medias.forEach(media => {
-        likes += media.likes;
-    })
-
-    document.querySelector(".photograph-likes").innerHTML = likes;
-    document.querySelector(".photograph-price").innerHTML = photographer.price;
-
-}
-
-function closeLightBox() {
-
-    mediaLightbox.setAttribute("aria-hidden", "true");
-    enableFocusMainElements()
-
-    clearLightBox();
-
-    document.removeEventListener("keydown", keyboardEvent)
-}
-
-async function changeLightBox(direction) {
-
-    let directionIndex = 0;
-
-    if ("prev" == direction) {
-        directionIndex = -1;
-    } else if ("next == direction") {
-        directionIndex = 1;
-    }
-    const allMedias = await getMedias(userId);
-
-    let currentMediaId = document.querySelector(".current-media").attributes.id.value.split("_")[1];
-
-    let currentIndex = allMedias.medias.findIndex((media) => media.id == currentMediaId);
-    let targetIndex = currentIndex + directionIndex;
-
-    if (targetIndex > allMedias.medias.length - 1) {
-        targetIndex = 0;
-    } else if (targetIndex < 0) {
-        targetIndex = allMedias.medias.length - 1;
-    }
-
-    const targetMediaModel = new mediaFactory(allMedias.medias[targetIndex]);
-    const mediaLightboxDOM = targetMediaModel.getMediaLightboxDOM();
-    clearLightBox();
-    mediaLightbox.appendChild(mediaLightboxDOM);
-}
-
-function clearLightBox() {
-    mediaLightbox.innerHTML = "";
-}
-
-function keyboardEvent(event) {
-    const currentMedia = document.querySelector(".current-media");
-    if ("ArrowLeft" == event.key) {
-        changeLightBox("prev")
-    } else if ("ArrowRight" == event.key) {
-        changeLightBox("next")
-    } else if ("Escape" == event.key) {
-        closeLightBox();
-    }
-
-    if ("Enter" == event.key) {
-        event.preventDefault();
-        if ("VIDEO" == currentMedia.tagName) {
-            if (currentMedia.paused) {
-
-                currentMedia.play()
-            } else {
-                currentMedia.pause()
-            }
-        }
-    }
-}
 
 function enableFocusMainElements(bool = true) {
 
@@ -200,13 +83,39 @@ function enableFocusMainElements(bool = true) {
     }
 }
 
+async function displayTotalLikes(medias) {
+    let likes = 0;
+
+    medias.forEach(media => {
+        likes += media.likes;
+    })
+
+    photographTotalLikes.innerHTML = likes;
+}
+
+async function displayPrice(photographer) {
+    photographPrice.innerHTML = photographer.price;
+}
+
+function updateLikes(like) {
+    if (like.classList.contains("liked")) {
+        like.value--;
+        like.classList.remove('liked');
+        photographTotalLikes.innerHTML--;
+    } else {
+        like.value++;
+        like.classList.add('liked');
+        photographTotalLikes.innerHTML++;
+    }
+    like.querySelector(".likes").innerHTML = like.value;
+}
+
 async function init() {
 
     if (!userId) {
         displayError();
     } else {
         const { photographer } = await getPhotographer(userId);
-        const { medias } = await getMedias(userId);
 
         if (!photographer) {
             displayError();
@@ -214,27 +123,19 @@ async function init() {
             const { medias } = await getMedias(userId);
 
             displayPhotographer(photographer);
-            displayLikes(photographer, medias);
 
             medias.forEach(media => {
                 displayMedia(media);
             });
+
+            displayTotalLikes(medias);
+            displayPrice(photographer);
         }
 
-        document.querySelectorAll(".likes-btn").forEach(btn => {
-            btn.addEventListener("click", (event) => {
-                if (btn.classList.contains("liked")) {
-                    btn.value--;
-                    btn.classList.remove('liked');
-                    document.querySelector(".photograph-likes").innerHTML--;
-                } else {
-                    btn.value++;
-                    btn.classList.add('liked');
-                    document.querySelector(".photograph-likes").innerHTML++;
-                }
-                btn.querySelector(".likes").innerHTML = btn.value;
+        document.querySelectorAll(".likes-btn").forEach(like => {
+            like.addEventListener("click", () => {
+                updateLikes(like);
             })
-
         });
 
         filtersSelect.addEventListener("change", () => {
