@@ -7,9 +7,14 @@ class mediaFactory {
         this._date = data.date;
         this._price = data.price;
         this._mediaUrl = ``;
+        this._mediaUrlThumbnail = ``;
         this._mediaType = "image";
 
+
         if (data.image) {
+            const imageThumbnailName = data.image.split(".")[0] + "_thumbnail." + data.image.split(".")[1];
+
+            this._mediaUrlThumbnail = `assets/images/${imageThumbnailName}`;
             this._mediaUrl = `assets/images/${data.image}`;
         } else if (data.video) {
             this._mediaUrl = `assets/videos/${data.video}`;
@@ -24,10 +29,12 @@ class mediaFactory {
      */
     getMediaCardDOM() {
         const article = document.createElement('article');
-        const link = document.createElement("a");
-        link.setAttribute("href", "#");
-
-        link.addEventListener("click", event => {
+        const container = document.createElement("div");
+        container.classList.add("media_container");
+        container.setAttribute("role", "button");
+        container.setAttribute("tabIndex", '0');
+        container.setAttribute("aria-label", this._title + ", vue agrandie");
+        container.addEventListener("click", event => {
             event.preventDefault();
             displayLightBox(this);
         })
@@ -35,18 +42,20 @@ class mediaFactory {
         let media = ``;
         if ("image" == this._mediaType) {
             media = document.createElement("img");
+            media.setAttribute("src", this._mediaUrlThumbnail);
         } else if ("video" == this._mediaType) {
             media = document.createElement("video");
+            media.setAttribute("src", this._mediaUrl);
             media.setAttribute("aria-disabled", "true");
             media.setAttribute("tabindex", "-1");
         }
 
-        media.setAttribute("src", this._mediaUrl);
         media.setAttribute("witdh", "300px");
         media.setAttribute("height", "300px");
+        media.setAttribute("alt", this._title);
 
-        link.appendChild(media)
-        article.appendChild(link);
+        container.appendChild(media)
+        article.appendChild(container);
 
         const aside = document.createElement("aside");
         aside.innerHTML = ` 
