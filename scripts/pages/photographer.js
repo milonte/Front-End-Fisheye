@@ -5,6 +5,8 @@ const photographersSection = document.querySelector(".photograph-header");
 const mediaSection = document.querySelector(".photograph-medias");
 const mediaLightbox = document.getElementById("medias-lightbox");
 const formModal = document.getElementById("contact_modal");
+const filtersSelect = document.getElementById("filters-select");
+filtersSelect.value = "popular";
 
 async function getPhotographer(photographerId = null) {
 
@@ -19,13 +21,13 @@ async function getPhotographer(photographerId = null) {
     })
 }
 
-async function getMedias(photographerId = null) {
+async function getMedias(photographerId = null, sortBy = "popular") {
 
     if (null === photographerId) {
         return false;
     }
 
-    const medias = await new MediaApi('data/photographers.json').getMedias(photographerId);
+    const medias = await new MediaApi('data/photographers.json').getMedias(photographerId, sortBy);
 
     return ({
         medias: [...medias]
@@ -46,6 +48,18 @@ async function displayMedia(media) {
     mediaSection.appendChild(mediaCardDOM);
 }
 
+function clearMedias() {
+    mediaSection.innerHTML = "";
+}
+
+async function filterMedias() {
+    const { medias } = await (getMedias(userId, filtersSelect.value));
+    clearMedias();
+    medias.forEach(media => {
+        displayMedia(media)
+    })
+}
+
 function displayError() {
     const divElement = document.createElement("div");
     divElement.innerHTML = `
@@ -59,8 +73,8 @@ async function displayLightBox(media) {
 
     mediaLightbox.setAttribute("aria-hidden", "false");
     enableFocusMainElements(false)
-    const mediaLightboxDOM = media.getMediaLightboxDOM();
 
+    const mediaLightboxDOM = media.getMediaLightboxDOM();
     mediaLightbox.appendChild(mediaLightboxDOM);
 
     document.addEventListener("keydown", keyboardEvent)
@@ -77,13 +91,6 @@ async function displayLikes(photographer, medias) {
     document.querySelector(".photograph-likes").innerHTML = likes;
     document.querySelector(".photograph-price").innerHTML = photographer.price;
 
-}
-
-
-function updateMediaLikes(event) {
-    console.log(event.target)
-
-    /* event.target.value = 104; */
 }
 
 function closeLightBox() {
@@ -129,7 +136,6 @@ function clearLightBox() {
 }
 
 function keyboardEvent(event) {
-
     const currentMedia = document.querySelector(".current-media");
     if ("ArrowLeft" == event.key) {
         changeLightBox("prev")
@@ -172,6 +178,8 @@ function enableFocusMainElements(bool = true) {
             btn.removeAttribute("aria-disabled", "true");
             btn.removeAttribute("tabindex", "-1");
         })
+        filtersSelect.removeAttribute("aria-disabled", "true");
+        filtersSelect.removeAttribute("tabindex", "-1");
         document.querySelector("body").style.overflow = "scroll";
     } else {
         headerLink.setAttribute("aria-disabled", "true");
@@ -186,6 +194,8 @@ function enableFocusMainElements(bool = true) {
             btn.setAttribute("aria-disabled", "true");
             btn.setAttribute("tabindex", "-1");
         })
+        filtersSelect.setAttribute("aria-disabled", "true");
+        filtersSelect.setAttribute("tabindex", "-1");
         document.querySelector("body").style.overflow = "hidden";
     }
 }
@@ -227,6 +237,18 @@ async function init() {
         })
 
     });
+
+    filtersSelect.addEventListener("change", () => {
+        const allOptions = filtersSelect.querySelectorAll('option');
+        allOptions.forEach(option => {
+            option.removeAttribute("selected")
+        })
+
+        const currentOption = filtersSelect.querySelector(`option[value='${filtersSelect.value}']`);
+        currentOption.setAttribute("selected", true);
+    })
+
 };
 
 init();
+

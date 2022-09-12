@@ -21,6 +21,18 @@
   <main id="main">
     <div class="photograph-header"></div>
 
+    <div id="filters">
+      <label for="filters-select">Trier par :
+
+        <select id="filters-select" onchange="filterMedias()">
+          <option value="popular" selected="true">Popularité</option>
+          <option value="date">Date</option>
+          <option value="title">Titre</option>
+        </select>
+      </label>
+
+    </div>
+
     <div class="photograph-medias"></div>
 
     <div class="photograph-stats">

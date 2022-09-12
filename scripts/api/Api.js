@@ -41,9 +41,21 @@ class MediaApi extends Api {
         super(url)
     }
 
-    async getMedias(id) {
+    async getMedias(id, sortBy = null) {
         const response = await this.get()
         const medias = response.media.filter(med => med.photographerId == id)
+
+        if (null !== sortBy) {
+            medias.sort((a, b) => {
+                if ("popular" == sortBy) {
+                    return b.likes - a.likes
+                } else if ("date" == sortBy) {
+                    return b.date - a.date
+                } else if ("title" == sortBy) {
+                    return a.title.localeCompare(b.title)
+                }
+            })
+        }
         return medias
     }
 }
