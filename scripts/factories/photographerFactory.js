@@ -26,7 +26,7 @@ function photographerFactory(page, data) {
                 <p class="city">${city}, ${country}</p>
                 <p class="tagline">${tagline}</p>
             </div>
-            <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+            <button class="contact_button">Contactez-moi</button>
             <img alt="${name}" src="${picture}" width="320px" height="240px" />
         `
     } else {

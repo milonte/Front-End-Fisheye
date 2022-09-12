@@ -49,15 +49,30 @@
   <div id="contact_modal" aria-hidden="true">
     <div class="modal">
       <header>
-        <h2>Contactez-moi</h2>
-        <img src="assets/icons/close.svg" onclick="closeModal()" />
+        <h2>Contactez-moi
+          <br>
+          <span class="contact-name"></span>
+        </h2>
+        <button class="close_modal_btn" onclick="closeModal()"><img src="assets/icons/close.svg" /></button>
       </header>
-      <form>
-        <div>
-          <label>Prénom</label>
-          <input />
+      <form name="contact-form" action="photographer.html" method="post" aria-label="Envoyez un message">
+        <div class="formData">
+          <label for="first">Prénom</label><br>
+          <input class="text-control" type="text" id="first" name="first" minlength="2" labelledby="#first" />
         </div>
-        <button class="contact_button">Envoyer</button>
+        <div class="formData">
+          <label for="last">Nom</label><br>
+          <input class="text-control" type="text" id="last" name="last" />
+        </div>
+        <div class="formData">
+          <label for="email">E-mail</label><br>
+          <input class="text-control" type="email" id="email" name="email" />
+        </div>
+        <div class="formData">
+          <label for="message">Votre message</label><br>
+          <textarea class="text-control" type="text" rows="7" id="message" name="message"></textarea>
+        </div>
+        <input class="submit_button" type="submit" value="Envoyer" />
       </form>
     </div>
   </div>

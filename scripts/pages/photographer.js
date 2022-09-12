@@ -220,33 +220,39 @@ async function init() {
                 displayMedia(media);
             });
         }
+
+        document.querySelectorAll(".likes-btn").forEach(btn => {
+            btn.addEventListener("click", (event) => {
+                if (btn.classList.contains("liked")) {
+                    btn.value--;
+                    btn.classList.remove('liked');
+                    document.querySelector(".photograph-likes").innerHTML--;
+                } else {
+                    btn.value++;
+                    btn.classList.add('liked');
+                    document.querySelector(".photograph-likes").innerHTML++;
+                }
+                btn.querySelector(".likes").innerHTML = btn.value;
+            })
+
+        });
+
+        filtersSelect.addEventListener("change", () => {
+            const allOptions = filtersSelect.querySelectorAll('option');
+            allOptions.forEach(option => {
+                option.removeAttribute("selected")
+            })
+
+            const currentOption = filtersSelect.querySelector(`option[value='${filtersSelect.value}']`);
+            currentOption.setAttribute("selected", true);
+        })
+
+        document.querySelector(".contact_button").addEventListener("click", () => {
+            displayModal(photographer.name);
+        });
+
     }
 
-    document.querySelectorAll(".likes-btn").forEach(btn => {
-        btn.addEventListener("click", (event) => {
-            if (btn.classList.contains("liked")) {
-                btn.value--;
-                btn.classList.remove('liked');
-                document.querySelector(".photograph-likes").innerHTML--;
-            } else {
-                btn.value++;
-                btn.classList.add('liked');
-                document.querySelector(".photograph-likes").innerHTML++;
-            }
-            btn.querySelector(".likes").innerHTML = btn.value;
-        })
-
-    });
-
-    filtersSelect.addEventListener("change", () => {
-        const allOptions = filtersSelect.querySelectorAll('option');
-        allOptions.forEach(option => {
-            option.removeAttribute("selected")
-        })
-
-        const currentOption = filtersSelect.querySelector(`option[value='${filtersSelect.value}']`);
-        currentOption.setAttribute("selected", true);
-    })
 
 };
 
