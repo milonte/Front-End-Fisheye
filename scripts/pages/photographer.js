@@ -1,6 +1,6 @@
 let userId = new URL(window.location).searchParams.get('userid');
-const headerSection = document.querySelector("header");;
 
+const mediasSection = document.querySelector(".photograph-medias");;
 const filtersSelect = document.getElementById("filters-select");
 filtersSelect.value = "popular";
 
@@ -40,23 +40,27 @@ async function displayPhotographer(photographer) {
     photographersSection.appendChild(userCardDOM);
 };
 
+/**
+ * 
+ * @param {boolean} show 
+ */
+function enableFocusMainElements(show = true) {
 
-function enableFocusMainElements(bool = true) {
-
-    const headerLink = headerSection.querySelector('a');
+    const logo = document.querySelector("header a");
+    const mediaContainers = mediasSection.querySelectorAll('.media_container');
     const contactBtn = document.querySelector(".contact_button");
-    const mediaCards = document.querySelectorAll("article a");
     const likedBtns = document.querySelectorAll(".likes-btn");
 
-    if (bool) {
-        headerLink.removeAttribute("aria-disabled");
-        headerLink.removeAttribute("tabindex", "-1");
+    if (show) {
+        logo.removeAttribute("aria-disabled", "true");
+        logo.removeAttribute("tabindex", "-1");
+        mediaContainers.forEach(container => {
+            container.removeAttribute("aria-disabled");
+            container.removeAttribute("tabindex", "-1");
+            container.setAttribute("tabindex", "0");
+        })
         contactBtn.removeAttribute("aria-disabled");
         contactBtn.removeAttribute("tabindex", "-1");
-        mediaCards.forEach(card => {
-            card.removeAttribute("aria-disabled");
-            card.removeAttribute("tabindex", "-1");
-        })
         likedBtns.forEach(btn => {
             btn.removeAttribute("aria-disabled", "true");
             btn.removeAttribute("tabindex", "-1");
@@ -65,14 +69,15 @@ function enableFocusMainElements(bool = true) {
         filtersSelect.removeAttribute("tabindex", "-1");
         document.querySelector("body").style.overflow = "scroll";
     } else {
-        headerLink.setAttribute("aria-disabled", "true");
-        headerLink.setAttribute("tabindex", "-1");
+        logo.setAttribute("aria-disabled", "true");
+        logo.setAttribute("tabindex", "-1");
+
+        mediaContainers.forEach(container => {
+            container.setAttribute("aria-disabled", "true");
+            container.setAttribute("tabindex", "-1");
+        })
         contactBtn.setAttribute("aria-disabled", "true");
         contactBtn.setAttribute("tabindex", "-1");
-        mediaCards.forEach(card => {
-            card.setAttribute("aria-disabled", "true");
-            card.setAttribute("tabindex", "-1");
-        })
         likedBtns.forEach(btn => {
             btn.setAttribute("aria-disabled", "true");
             btn.setAttribute("tabindex", "-1");
@@ -139,6 +144,7 @@ async function init() {
         });
 
         filtersSelect.addEventListener("change", () => {
+            filterMedias();
             const allOptions = filtersSelect.querySelectorAll('option');
             allOptions.forEach(option => {
                 option.removeAttribute("selected")
@@ -153,8 +159,6 @@ async function init() {
         });
 
     }
-
-
 };
 
 init();

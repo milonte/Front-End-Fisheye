@@ -37,6 +37,11 @@ class mediaFactory {
         container.addEventListener("click", event => {
             event.preventDefault();
             displayLightBox(this);
+        });
+        container.addEventListener("keydown", (event) => {
+            if ("Enter" == event.key) {
+                displayLightBox(this);
+            }
         })
 
         let media = ``;

@@ -3,8 +3,6 @@ const mediaSection = document.querySelector(".photograph-medias");
 const photographTotalLikes = document.querySelector(".photograph-likes");
 const photographPrice = document.querySelector(".photograph-price");
 
-
-
 /**
  * Display Media Card
  * @param {Object} media 
