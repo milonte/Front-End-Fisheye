@@ -14,7 +14,7 @@ class Api {
     }
 }
 
-class PhotographerApi extends Api {
+export class PhotographerApi extends Api {
     /**
      * 
      * @param {string} url 
@@ -36,7 +36,7 @@ class PhotographerApi extends Api {
 
 }
 
-class MediaApi extends Api {
+export class MediaApi extends Api {
     constructor(url) {
         super(url)
     }

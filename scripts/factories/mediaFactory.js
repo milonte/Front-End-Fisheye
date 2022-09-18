@@ -1,4 +1,4 @@
-class mediaFactory {
+export class mediaFactory {
     constructor(data) {
         this._id = data.id;
         this._photographerId = data.photographerId;
@@ -28,21 +28,13 @@ class mediaFactory {
      * @returns {HTMLElement} 
      */
     getMediaCardDOM() {
-        const article = document.createElement('article');
+        const card = document.createElement('article');
+        card.setAttribute("aria-hidden", "false");
         const container = document.createElement("div");
         container.classList.add("media_container");
         container.setAttribute("role", "button");
         container.setAttribute("tabIndex", '0');
         container.setAttribute("aria-label", this._title + ", vue agrandie");
-        container.addEventListener("click", event => {
-            event.preventDefault();
-            displayLightBox(this);
-        });
-        container.addEventListener("keydown", (event) => {
-            if ("Enter" == event.key) {
-                displayLightBox(this);
-            }
-        })
 
         let media = ``;
         if ("image" == this._mediaType) {
@@ -60,53 +52,46 @@ class mediaFactory {
         media.setAttribute("alt", this._title);
 
         container.appendChild(media)
-        article.appendChild(container);
+        card.appendChild(container);
 
         const aside = document.createElement("aside");
-        aside.innerHTML = ` 
-                            <span class="title">${this._title}</span>
-                            <button class="likes-btn" value="${this._likes}">
-                                <span class="likes">${this._likes}</span>
-                                <span class="hearth"><i class="fa-solid fa-heart"></i></span>
-                            </button>
-                            `
+        aside.innerHTML = `<span class="title">${this._title}</span>`;
 
-        article.appendChild(aside);
+        const likeBtn = document.createElement("button");
+        likeBtn.classList.add("likes-btn");
+        likeBtn.setAttribute("value", this._likes);
+        likeBtn.innerHTML = `<span class="likes">${this._likes}</span>
+                             <span class="hearth"><i class="fa-solid fa-heart"></i></span>`;
 
-        return article;
+        aside.appendChild(likeBtn);
+        card.appendChild(aside);
+
+        return { card, container, likeBtn };
     }
 
     /**
-     * Get Medai lightbox modal template
+     * Get Medai lightbox lightbox template
      * @returns {HTMLElement}
      */
     getMediaLightboxDOM() {
-        const modal = document.createElement("div");
-        modal.classList.add("modal");
+        const lightbox = document.createElement("div");
+        lightbox.classList.add("modal");
 
         const closeBtn = document.createElement("button");
         closeBtn.setAttribute("tabindex", "3");
         closeBtn.classList.add("lightbox-btn", "lightbox-close");
         closeBtn.innerHTML = `<i class="fa-solid fa-2x fa-close"></i>`;
-        closeBtn.addEventListener("click", () => {
-            closeLightBox();
-        })
 
         const prevBtn = document.createElement("button");
         prevBtn.setAttribute("tabindex", "1");
         prevBtn.classList.add("lightbox-btn", "lightbox-prev");
         prevBtn.innerHTML = `<i class="fa-solid fa-2x fa-chevron-left"></i>`;
-        prevBtn.addEventListener("click", () => {
-            changeLightBox("prev");
-        })
+
 
         const nextBtn = document.createElement("button");
         nextBtn.setAttribute("tabindex", "2");
         nextBtn.classList.add("lightbox-btn", "lightbox-next");
         nextBtn.innerHTML = `<i class="fa-solid fa-2x fa-chevron-right"></i>`;
-        nextBtn.addEventListener("click", () => {
-            changeLightBox("next");
-        })
 
         let media = ``;
         if ("image" == this._mediaType) {
@@ -126,13 +111,13 @@ class mediaFactory {
         title.classList.add("title");
         title.innerHTML = this._title;
 
-        modal.appendChild(prevBtn);
-        modal.appendChild(media);
-        modal.appendChild(closeBtn);
-        modal.appendChild(nextBtn);
-        modal.appendChild(title);
+        lightbox.appendChild(prevBtn);
+        lightbox.appendChild(media);
+        lightbox.appendChild(closeBtn);
+        lightbox.appendChild(nextBtn);
+        lightbox.appendChild(title);
 
-        return modal;
+        return { lightbox, prevBtn, nextBtn, closeBtn };
     }
 
 }

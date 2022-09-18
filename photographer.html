@@ -55,7 +55,7 @@
           <br>
           <span class="contact-name"></span>
         </h2>
-        <button class="close_modal_btn" onclick="closeModal()"><img src="assets/icons/close.svg" /></button>
+        <button class="close_modal_btn"><img src="assets/icons/close.svg" /></button>
       </header>
       <form name="contact-form" action="photographer.html" method="post" aria-label="Envoyez un message">
         <div class="formData">
@@ -78,13 +78,8 @@
       </form>
     </div>
   </div>
-  <script src="scripts/api/Api.js"></script>
-  <script src="scripts/factories/photographerFactory.js"></script>
-  <script src="scripts/factories/mediaFactory.js"></script>
-  <script src="/scripts/pages/photographer.js"></script>
-  <script src="/scripts/utils/contactForm.js"></script>
-  <script src="/scripts/utils/mediaLightbox.js"></script>
-  <script src="/scripts/utils/mediaCard.js"></script>
+  <script type="module" src="/scripts/utils/contactForm.js"></script>
+  <script type="module" src="/scripts/pages/photographer.js"></script>
 </body>
 
 </html>

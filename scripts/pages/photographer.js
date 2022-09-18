@@ -1,8 +1,70 @@
+import { PhotographerApi, MediaApi } from "../api/Api.js";
+import { photographerFactory } from "../factories/photographerFactory.js";
+import { mediaFactory } from "../factories/mediaFactory.js";
+
 let userId = new URL(window.location).searchParams.get('userid');
 
-const mediasSection = document.querySelector(".photograph-medias");;
+const mediasSection = document.querySelector(".photograph-medias");
+
 const filtersSelect = document.getElementById("filters-select");
 filtersSelect.value = "popular";
+
+const photographersSection = document.querySelector(".photograph-header");
+const photographTotalLikes = document.querySelector(".photograph-likes");
+const photographPrice = document.querySelector(".photograph-price");
+
+const closeModalBtn = document.querySelector(".close_modal_btn"); // close modal button
+
+
+async function init() {
+
+    if (!userId) {
+        displayPageError();
+    } else {
+        const { photographer } = await getPhotographer(userId);
+
+        if (!photographer) {
+            displayPageError();
+        } else {
+
+            const { medias } = await getMedias(photographer.id);
+
+            displayPhotographer(photographer);
+
+            medias.forEach(media => {
+                displayMedia(media);
+            });
+
+            displayTotalLikes(medias);
+            displayPrice(photographer);
+
+            document.querySelectorAll(".likes-btn").forEach(like => {
+                like.addEventListener("click", () => {
+                    updateLikes(like);
+                })
+            });
+
+            filtersSelect.addEventListener("change", () => {
+                sortMedias();
+                const allOptions = filtersSelect.querySelectorAll('option');
+                allOptions.forEach(option => {
+                    option.removeAttribute("selected")
+                })
+
+                const currentOption = filtersSelect.querySelector(`option[value='${filtersSelect.value}']`);
+                currentOption.setAttribute("selected", true);
+            })
+
+            /* Display contact Form */
+            document.querySelector(".contact_button").addEventListener("click", () => {
+                displayModal(photographer.name);
+            });
+
+            closeModalBtn.addEventListener("click", closeModal);
+
+        }
+    }
+}
 
 async function getPhotographer(photographerId = null) {
 
@@ -38,7 +100,7 @@ async function displayPhotographer(photographer) {
     const photographerModel = photographerFactory("photographer", photographer);
     const userCardDOM = photographerModel.getUserCardDOM();
     photographersSection.appendChild(userCardDOM);
-};
+}
 
 /**
  * Display photographer error page
@@ -103,6 +165,176 @@ function enableFocusMainElements(show = true) {
     }
 }
 
+const mediaLightbox = document.getElementById("medias-lightbox");
+
+/**
+ * Display medias lightbox
+ * @param {Object} media 
+ */
+async function displayLightBox(media) {
+
+    mediaLightbox.setAttribute("aria-hidden", "false");
+    enableFocusMainElements(false)
+
+    const mediaLightboxDOM = new mediaFactory(media).getMediaLightboxDOM();
+
+    /* Enable Keydown Listeners */
+    document.addEventListener("keydown", lightboxKeyboardEvent);
+
+    mediaLightboxDOM.prevBtn.addEventListener("click", () => {
+        changeLightBox("prev");
+    })
+
+    mediaLightboxDOM.nextBtn.addEventListener("click", () => {
+        changeLightBox("next");
+    })
+
+    /* Close Lightbox Listeners */
+    mediaLightboxDOM.closeBtn.addEventListener("click", () => {
+        closeLightBox();
+    })
+
+    mediaLightbox.appendChild(mediaLightboxDOM.lightbox);
+}
+
+/**
+ * Close medias lightbox
+ */
+function closeLightBox() {
+
+    mediaLightbox.setAttribute("aria-hidden", "true");
+    enableFocusMainElements()
+
+    clearLightBox();
+
+    document.removeEventListener("keydown", lightboxKeyboardEvent)
+}
+
+/**
+ * Display prev / next media
+ * @param {string} direction - "prev" or "next"
+ */
+async function changeLightBox(direction) {
+
+    let directionIndex = 0;
+    const allMedias = await getMedias(userId);
+
+    if ("prev" == direction) {
+        directionIndex = -1;
+    } else if ("next" == direction) {
+        directionIndex = 1;
+    }
+
+    let currentMediaId = document.querySelector(".current-media").attributes.id.value.split("_")[1];
+
+    let currentIndex = allMedias.medias.findIndex((media) => media.id == currentMediaId);
+
+    let targetIndex = currentIndex + directionIndex;
+
+    if (targetIndex > allMedias.medias.length - 1) {
+        targetIndex = 0;
+    } else if (targetIndex < 0) {
+        targetIndex = allMedias.medias.length - 1;
+    }
+
+    const targetMediaModel = new mediaFactory(allMedias.medias[targetIndex]);
+    const mediaLightboxDOM = targetMediaModel.getMediaLightboxDOM();
+    clearLightBox();
+
+    mediaLightbox.appendChild(mediaLightboxDOM.lightbox);
+}
+
+/**
+ * Clear Lightbox
+ */
+function clearLightBox() {
+    mediaLightbox.innerHTML = "";
+}
+
+/**
+ * Keyboard Events used for LightBox
+ * @param {Event} event 
+ */
+async function lightboxKeyboardEvent(event) {
+    const currentMedia = document.querySelector(".current-media");
+
+    if ("ArrowLeft" == event.key) {
+        changeLightBox("prev")
+    } else if ("ArrowRight" == event.key) {
+        changeLightBox("next")
+    } else if ("Escape" == event.key) {
+        closeLightBox();
+    }
+
+    if ("Enter" == event.key) {
+        event.preventDefault();
+        if ("VIDEO" == currentMedia.tagName) {
+            if (currentMedia.paused) {
+
+                currentMedia.play()
+            } else {
+                currentMedia.pause()
+            }
+        }
+    }
+}
+
+/**
+ * Keyboard Events used for LightBox
+ * @param {Event} event 
+ */
+async function contactKeyboardEvent(event) {
+    if ("Escape" == event.key) {
+        closeModal();
+    }
+}
+
+
+/**
+ * Display Media Card
+ * @param {Object} media 
+ */
+async function displayMedia(media) {
+    const mediaModel = new mediaFactory(media);
+    const mediaCardDOM = mediaModel.getMediaCardDOM();
+
+    /* display Lightbox Listeners */
+    mediaCardDOM.container.addEventListener("click", event => {
+        if ('Enter' == event.key) {
+            event.preventDefault();
+            displayLightBox(media);
+        }
+    });
+    mediaCardDOM.container.addEventListener("keydown", event => {
+        if ('Enter' == event.key) {
+            event.preventDefault();
+            displayLightBox(media);
+        }
+    });
+
+    mediasSection.appendChild(mediaCardDOM.card);
+
+}
+
+/**
+ * Clear all medias
+ */
+function clearMedias() {
+    mediasSection.innerHTML = "";
+}
+
+/**
+ * Sort medias by filter select value
+ * 
+ */
+async function sortMedias() {
+    const { sortedMedias } = await (getMedias(userId, filtersSelect.value));
+    clearMedias();
+    sortedMedias.forEach(media => {
+        displayMedia(media)
+    })
+}
+
 async function displayTotalLikes(medias) {
     let likes = 0;
 
@@ -130,52 +362,31 @@ function updateLikes(like) {
     like.querySelector(".likes").innerHTML = like.value;
 }
 
-async function init() {
+/**
+ * Display contact form modal
+ * @param {string} name - Name of Photographer
+ * @return {void}
+ */
+function displayModal(name) {
+    const modal = document.getElementById("contact_modal");
+    modal.style.display = "block";
+    modal.removeAttribute("aria-hidden");
+    const contactNameSpan = document.querySelector(".contact-name");
+    contactNameSpan.innerHTML = name;
+    enableFocusMainElements(false);
+    document.addEventListener("keydown", contactKeyboardEvent);
+}
 
-    if (!userId) {
-        displayPageError();
-    } else {
-        const { photographer } = await getPhotographer(userId);
-
-        if (!photographer) {
-            displayPageError();
-        } else {
-            const { medias } = await getMedias(userId);
-
-            displayPhotographer(photographer);
-
-            medias.forEach(media => {
-                displayMedia(media);
-            });
-
-            displayTotalLikes(medias);
-            displayPrice(photographer);
-
-            document.querySelectorAll(".likes-btn").forEach(like => {
-                like.addEventListener("click", () => {
-                    updateLikes(like);
-                })
-            });
-
-            filtersSelect.addEventListener("change", () => {
-                filterMedias();
-                const allOptions = filtersSelect.querySelectorAll('option');
-                allOptions.forEach(option => {
-                    option.removeAttribute("selected")
-                })
-
-                const currentOption = filtersSelect.querySelector(`option[value='${filtersSelect.value}']`);
-                currentOption.setAttribute("selected", true);
-            })
-
-            document.querySelector(".contact_button").addEventListener("click", () => {
-                displayModal(photographer.name);
-            });
-        }
-
-
-    }
-};
+/**
+ * Close contact form modal
+ * @return {void}
+ */
+function closeModal() {
+    const modal = document.getElementById("contact_modal");
+    modal.style.display = "none";
+    enableFocusMainElements()
+    document.removeEventListener("keydown", contactKeyboardEvent);
+}
 
 init();
 

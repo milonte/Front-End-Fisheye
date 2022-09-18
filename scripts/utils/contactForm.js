@@ -6,30 +6,6 @@ const emailInput = document.getElementById("email"); // 3rd form input (email)
 const messageInput = document.getElementById("message"); // 4th form input (message)
 
 /**
- * Display contact form modal
- * @param {string} name - Name of Photographer
- * @return {void}
- */
-function displayModal(name) {
-    const modal = document.getElementById("contact_modal");
-    modal.style.display = "block";
-    modal.removeAttribute("aria-hidden");
-    const contactNameSpan = document.querySelector(".contact-name");
-    contactNameSpan.innerHTML = name;
-    enableFocusMainElements(false)
-}
-
-/**
- * Close contact form modal
- * @return {void}
- */
-function closeModal() {
-    const modal = document.getElementById("contact_modal");
-    modal.style.display = "none";
-    enableFocusMainElements()
-}
-
-/**
  * Display error message & border error after input
  * @param  {HTMLElement} input - Display message will be display after this element
  * @param  {string} message - Message to display
@@ -79,7 +55,7 @@ function isName(value) {
  */
 function isEmail(value) {
     // source https://www.w3docs.com/snippets/javascript/how-to-validate-an-e-mail-using-javascript.html
-    return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(value));
+    return (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,4})+$/.test(value));
 }
 
 function isValid(inputName) {
@@ -166,6 +142,8 @@ form.addEventListener("submit", event => {
             'email': emailInput.value,
             'message': messageInput.value
         };
+
+        // this console.log is wanted, don't remove it !!
         console.log(jsonResponse);
 
         // reset modal form after send request
