@@ -41,6 +41,21 @@ async function displayPhotographer(photographer) {
 };
 
 /**
+ * Display photographer error page
+ * if photographer is not found
+ */
+function displayPageError() {
+    const div = document.createElement("div");
+    div.classList.add("page_error");
+    div.innerHTML = "Cette page n'existe pas.";
+    const link = document.createElement("a");
+    link.innerHTML = "Retour à l'accueil";
+    link.setAttribute("href", "index.html");
+    div.appendChild(link);
+    photographersSection.appendChild(div);
+}
+
+/**
  * 
  * @param {boolean} show 
  */
@@ -118,12 +133,12 @@ function updateLikes(like) {
 async function init() {
 
     if (!userId) {
-        displayError();
+        displayPageError();
     } else {
         const { photographer } = await getPhotographer(userId);
 
         if (!photographer) {
-            displayError();
+            displayPageError();
         } else {
             const { medias } = await getMedias(userId);
 
@@ -135,28 +150,29 @@ async function init() {
 
             displayTotalLikes(medias);
             displayPrice(photographer);
+
+            document.querySelectorAll(".likes-btn").forEach(like => {
+                like.addEventListener("click", () => {
+                    updateLikes(like);
+                })
+            });
+
+            filtersSelect.addEventListener("change", () => {
+                filterMedias();
+                const allOptions = filtersSelect.querySelectorAll('option');
+                allOptions.forEach(option => {
+                    option.removeAttribute("selected")
+                })
+
+                const currentOption = filtersSelect.querySelector(`option[value='${filtersSelect.value}']`);
+                currentOption.setAttribute("selected", true);
+            })
+
+            document.querySelector(".contact_button").addEventListener("click", () => {
+                displayModal(photographer.name);
+            });
         }
 
-        document.querySelectorAll(".likes-btn").forEach(like => {
-            like.addEventListener("click", () => {
-                updateLikes(like);
-            })
-        });
-
-        filtersSelect.addEventListener("change", () => {
-            filterMedias();
-            const allOptions = filtersSelect.querySelectorAll('option');
-            allOptions.forEach(option => {
-                option.removeAttribute("selected")
-            })
-
-            const currentOption = filtersSelect.querySelector(`option[value='${filtersSelect.value}']`);
-            currentOption.setAttribute("selected", true);
-        })
-
-        document.querySelector(".contact_button").addEventListener("click", () => {
-            displayModal(photographer.name);
-        });
 
     }
 };
