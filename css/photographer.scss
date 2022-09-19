@@ -256,8 +256,8 @@ body {
     justify-content: space-between;
 
     article {
-        flex: 33%;
         display: flex;
+        flex: 0 0 33%;
         flex-direction: column;
         flex-wrap: nowrap;
         align-items: center;

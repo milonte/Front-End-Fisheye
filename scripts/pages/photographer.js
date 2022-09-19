@@ -174,17 +174,18 @@ const mediaLightbox = document.getElementById("medias-lightbox");
 async function displayLightBox(media) {
 
     mediaLightbox.setAttribute("aria-hidden", "false");
-    enableFocusMainElements(false)
+    enableFocusMainElements(false);
 
     const mediaLightboxDOM = new mediaFactory(media).getMediaLightboxDOM();
+    mediaLightbox.appendChild(mediaLightboxDOM.lightbox);
 
     /* Enable Keydown Listeners */
     document.addEventListener("keydown", lightboxKeyboardEvent);
 
+    /* Lightbox navigation buttons listeners */
     mediaLightboxDOM.prevBtn.addEventListener("click", () => {
         changeLightBox("prev");
     })
-
     mediaLightboxDOM.nextBtn.addEventListener("click", () => {
         changeLightBox("next");
     })
@@ -193,8 +194,6 @@ async function displayLightBox(media) {
     mediaLightboxDOM.closeBtn.addEventListener("click", () => {
         closeLightBox();
     })
-
-    mediaLightbox.appendChild(mediaLightboxDOM.lightbox);
 }
 
 /**
@@ -237,11 +236,9 @@ async function changeLightBox(direction) {
         targetIndex = allMedias.medias.length - 1;
     }
 
-    const targetMediaModel = new mediaFactory(allMedias.medias[targetIndex]);
-    const mediaLightboxDOM = targetMediaModel.getMediaLightboxDOM();
     clearLightBox();
 
-    mediaLightbox.appendChild(mediaLightboxDOM.lightbox);
+    displayLightBox(allMedias.medias[targetIndex]);
 }
 
 /**
@@ -300,10 +297,8 @@ async function displayMedia(media) {
 
     /* display Lightbox Listeners */
     mediaCardDOM.container.addEventListener("click", event => {
-        if ('Enter' == event.key) {
-            event.preventDefault();
-            displayLightBox(media);
-        }
+        event.preventDefault();
+        displayLightBox(media);
     });
     mediaCardDOM.container.addEventListener("keydown", event => {
         if ('Enter' == event.key) {
