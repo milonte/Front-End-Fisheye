@@ -325,10 +325,12 @@ function clearMedias() {
 
 /**
  * Sort medias by filter select value
- * 
  */
 async function sortMedias() {
-    const { sortedMedias } = await (getMedias(userId, filtersSelect.value));
+    let sortedMedias;
+    await (getMedias(userId, filtersSelect.value))
+        .then(response => sortedMedias = response.medias);
+
     clearMedias();
     sortedMedias.forEach(media => {
         displayMedia(media)
