@@ -16,7 +16,7 @@
 
 <body>
   <header>
-    <a href="index.html">
+    <a href="index.html" title="Retour page accueil">
       <img src="assets/images/logo.png" class="logo" alt="Fisheye Home page" width="200px" height="50px" />
     </a>
   </header>
@@ -25,12 +25,12 @@
 
     <div id="filters">
       <label for="filters-select">Trier par :
-
         <select id="filters-select">
-          <option value="popular" selected="true">Popularité</option>
-          <option value="date">Date</option>
-          <option value="title">Titre</option>
+          <option value="popular" selected="true">&nbsp&nbsp Popularité</option>
+          <option value="date">&nbsp&nbsp Date</option>
+          <option value="title">&nbsp&nbsp Titre</option>
         </select>
+
       </label>
 
     </div>
@@ -55,7 +55,8 @@
           <br>
           <span class="contact-name"></span>
         </h2>
-        <button class="close_modal_btn"><img src="assets/icons/close.svg" /></button>
+        <button class="close_modal_btn" aria-label="Fermer formulaire de contact"><img
+            src="assets/icons/close.svg" /></button>
       </header>
       <form name="contact-form" action="photographer.html" method="post" aria-label="Envoyez un message">
         <div class="formData">

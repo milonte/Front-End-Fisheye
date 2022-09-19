@@ -15,7 +15,6 @@ const photographPrice = document.querySelector(".photograph-price");
 
 const closeModalBtn = document.querySelector(".close_modal_btn"); // close modal button
 
-
 async function init() {
 
     if (!userId) {
@@ -186,13 +185,21 @@ async function displayLightBox(media) {
     mediaLightboxDOM.prevBtn.addEventListener("click", () => {
         changeLightBox("prev");
     })
+    mediaLightboxDOM.prevBtn.addEventListener("keydown", (event) => {
+        "Enter" == event.key ? changeLightBox("prev") : null;
+    })
     mediaLightboxDOM.nextBtn.addEventListener("click", () => {
         changeLightBox("next");
     })
-
+    mediaLightboxDOM.nextBtn.addEventListener("keydown", (event) => {
+        "Enter" == event.key ? changeLightBox("prev") : null;
+    })
     /* Close Lightbox Listeners */
     mediaLightboxDOM.closeBtn.addEventListener("click", () => {
         closeLightBox();
+    })
+    mediaLightboxDOM.closeBtn.addEventListener("keydown", (event) => {
+        "Enter" == event.key ? closeLightBox() : null;
     })
 }
 
@@ -239,6 +246,7 @@ async function changeLightBox(direction) {
     clearLightBox();
 
     displayLightBox(allMedias.medias[targetIndex]);
+
 }
 
 /**
@@ -263,7 +271,7 @@ async function lightboxKeyboardEvent(event) {
         closeLightBox();
     }
 
-    if ("Enter" == event.key) {
+    if (" " == event.key) {
         event.preventDefault();
         if ("VIDEO" == currentMedia.tagName) {
             if (currentMedia.paused) {
@@ -357,6 +365,7 @@ function updateLikes(like) {
         photographTotalLikes.innerHTML++;
     }
     like.querySelector(".likes").innerHTML = like.value;
+    like.setAttribute("aria-label", like.value + "like");
 }
 
 /**
