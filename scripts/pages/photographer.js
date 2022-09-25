@@ -178,23 +178,33 @@ async function displayLightBox(media) {
     const mediaLightboxDOM = new mediaFactory(media).getMediaLightboxDOM();
     mediaLightbox.appendChild(mediaLightboxDOM.lightbox);
 
-    /* Enable Keydown Listeners */
+    /*
+    Enable Keydown Listeners
+    Left / Right Arrow to navigate previous / next media
+    Espace to close Lightbox
+    Space to play video
+    */
     document.addEventListener("keydown", lightboxKeyboardEvent);
 
-    /* Lightbox navigation buttons listeners */
+    /*
+    Lightbox navigation buttons listeners
+    On click or on press Enter if focused
+    */
+    // Previous button
     mediaLightboxDOM.prevBtn.addEventListener("click", () => {
         changeLightBox("prev");
     })
     mediaLightboxDOM.prevBtn.addEventListener("keydown", (event) => {
         "Enter" == event.key ? changeLightBox("prev") : null;
     })
+    // Next button
     mediaLightboxDOM.nextBtn.addEventListener("click", () => {
         changeLightBox("next");
     })
     mediaLightboxDOM.nextBtn.addEventListener("keydown", (event) => {
-        "Enter" == event.key ? changeLightBox("prev") : null;
+        "Enter" == event.key ? changeLightBox("next") : null;
     })
-    /* Close Lightbox Listeners */
+    // Close button
     mediaLightboxDOM.closeBtn.addEventListener("click", () => {
         closeLightBox();
     })
@@ -207,12 +217,13 @@ async function displayLightBox(media) {
  * Close medias lightbox
  */
 function closeLightBox() {
-
+    // hide lightbox
     mediaLightbox.setAttribute("aria-hidden", "true");
+    // Restore focuseable elements on main page
     enableFocusMainElements()
-
+    // Remove Lightbox HTML content
     clearLightBox();
-
+    // Remove Keyboard listenet for Lightbox
     document.removeEventListener("keydown", lightboxKeyboardEvent)
 }
 
@@ -222,19 +233,18 @@ function closeLightBox() {
  */
 async function changeLightBox(direction) {
 
-    let directionIndex = 0;
-    const allMedias = await getMedias(userId);
 
+    let directionIndex = 0;
     if ("prev" == direction) {
         directionIndex = -1;
     } else if ("next" == direction) {
         directionIndex = 1;
     }
 
+    const allMedias = await getMedias(userId);
+
     let currentMediaId = document.querySelector(".current-media").attributes.id.value.split("_")[1];
-
     let currentIndex = allMedias.medias.findIndex((media) => media.id == currentMediaId);
-
     let targetIndex = currentIndex + directionIndex;
 
     if (targetIndex > allMedias.medias.length - 1) {
@@ -242,9 +252,9 @@ async function changeLightBox(direction) {
     } else if (targetIndex < 0) {
         targetIndex = allMedias.medias.length - 1;
     }
-
+    // Remove Lightbox HTML content
     clearLightBox();
-
+    // Display Prev / Next media on Lightbox
     displayLightBox(allMedias.medias[targetIndex]);
 
 }
@@ -271,6 +281,7 @@ async function lightboxKeyboardEvent(event) {
         closeLightBox();
     }
 
+    // Play video on press "Space" key (if media is video)
     if (" " == event.key) {
         event.preventDefault();
         if ("VIDEO" == currentMedia.tagName) {
@@ -283,17 +294,6 @@ async function lightboxKeyboardEvent(event) {
         }
     }
 }
-
-/**
- * Keyboard Events used for LightBox
- * @param {Event} event 
- */
-async function contactKeyboardEvent(event) {
-    if ("Escape" == event.key) {
-        closeModal();
-    }
-}
-
 
 /**
  * Display Media Card
@@ -392,6 +392,16 @@ function closeModal() {
     modal.style.display = "none";
     enableFocusMainElements()
     document.removeEventListener("keydown", contactKeyboardEvent);
+}
+
+/**
+ * Keyboard Events used for Contact Modal
+ * @param {Event} event 
+ */
+async function contactKeyboardEvent(event) {
+    if ("Escape" == event.key) {
+        closeModal();
+    }
 }
 
 init();
