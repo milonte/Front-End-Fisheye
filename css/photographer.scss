@@ -159,6 +159,7 @@ body {
 .photograph-header {
     background-color: config.$primary-background-color;
     height: 300px;
+    display: contents;
 
     @include config.screen-max(config.$tablet-max-width) {
         margin: 0;
@@ -251,7 +252,6 @@ body {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-
     justify-content: space-between;
 
     article {
@@ -261,6 +261,10 @@ body {
         flex-wrap: nowrap;
         align-items: center;
         margin-top: 30px;
+
+        @include config.screen-max(config.$mobile-max-width) {
+            flex: 1;
+        }
 
         .media_container {
             min-width: 300px;
@@ -306,7 +310,12 @@ body {
                 background: transparent;
                 border: none;
                 font-size: 1.5rem;
+                cursor: pointer;
                 color: config.$primary-color;
+
+                &:hover {
+                    font-size: 1.6rem;
+                }
             }
 
             .liked {

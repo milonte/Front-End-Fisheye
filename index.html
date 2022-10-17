@@ -2,7 +2,10 @@
 <html lang="fr">
 
 <head>
-  <link href="css/style.css" rel="stylesheet" type="text/css" />
+  <link rel="preload" href="css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="css/style.css">
+  </noscript>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Le meilleur des photographes indépendants">
@@ -20,7 +23,7 @@
     <h1>Nos photographes</h1>
   </header>
   <main id="main">
-    <div class="photographer_section"></div>
+    <section class="photographer_section"></section>
   </main>
   <script type="module" src="scripts/pages/index.js"></script>
 </body>

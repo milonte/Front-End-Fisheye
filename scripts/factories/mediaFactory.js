@@ -30,7 +30,6 @@ export class mediaFactory {
     getMediaCardDOM() {
         const card = document.createElement('article');
         card.setAttribute("aria-hidden", "false");
-        card.setAttribute("aria-controls", "merde");
         const container = document.createElement("div");
         container.classList.add("media_container");
         container.setAttribute("role", "button");
