@@ -15,6 +15,8 @@ const photographPrice = document.querySelector(".photograph-price");
 
 const closeModalBtn = document.querySelector(".close_modal_btn"); // close modal button
 
+var allMedias = null;
+
 async function init() {
 
     if (!userId) {
@@ -26,15 +28,16 @@ async function init() {
             displayPageError();
         } else {
 
-            const { medias } = await getMedias(photographer.id);
+            allMedias = await getMedias(photographer.id).then(resp => resp.medias);
+
 
             displayPhotographer(photographer);
 
-            medias.forEach(media => {
+            allMedias.forEach(media => {
                 displayMedia(media);
             });
 
-            displayTotalLikes(medias);
+            displayTotalLikes(allMedias);
             displayPrice(photographer);
 
             document.querySelectorAll(".likes-btn").forEach(like => {
@@ -241,21 +244,19 @@ async function changeLightBox(direction) {
         directionIndex = 1;
     }
 
-    const allMedias = await getMedias(userId);
-
     let currentMediaId = document.querySelector(".current-media").attributes.id.value.split("_")[1];
-    let currentIndex = allMedias.medias.findIndex((media) => media.id == currentMediaId);
+    let currentIndex = allMedias.findIndex((media) => media.id == currentMediaId);
     let targetIndex = currentIndex + directionIndex;
 
-    if (targetIndex > allMedias.medias.length - 1) {
+    if (targetIndex > allMedias.length - 1) {
         targetIndex = 0;
     } else if (targetIndex < 0) {
-        targetIndex = allMedias.medias.length - 1;
+        targetIndex = allMedias.length - 1;
     }
     // Remove Lightbox HTML content
     clearLightBox();
     // Display Prev / Next media on Lightbox
-    displayLightBox(allMedias.medias[targetIndex]);
+    displayLightBox(allMedias[targetIndex]);
 
 }
 
