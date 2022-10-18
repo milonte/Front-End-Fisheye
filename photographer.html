@@ -5,10 +5,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
     integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="preload" href="css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript>
-    <link rel="stylesheet" href="css/style.css">
-  </noscript>
+  <link rel="stylesheet" href="css/style.css">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Page Photographe">
@@ -20,23 +17,23 @@
 <body>
   <header>
     <a href="index.html" title="Retour page accueil">
-      <img src="assets/images/logo.png" class="logo" alt="Fisheye Home page" width="200px" height="50px" />
+      <img src="assets/images/logo.png" class="logo" alt="Fisheye Home page" width="200" height="50" />
     </a>
   </header>
   <main id="main">
     <div class="photograph-header"></div>
 
-    <section id="filters">
+    <div id="filters">
       <label for="filters-select">Trier par :
         <select id="filters-select">
-          <option value="popular" selected="true">&nbsp&nbsp Popularité</option>
+          <option value="popular" selected>&nbsp&nbsp Popularité</option>
           <option value="date">&nbsp&nbsp Date</option>
           <option value="title">&nbsp&nbsp Titre</option>
         </select>
 
       </label>
 
-    </section>
+    </div>
 
     <section class="photograph-medias"></section>
 
@@ -55,28 +52,28 @@
     <div class="modal">
       <header>
         <h2>Contactez-moi
-          <br>
+
           <span class="contact-name"></span>
         </h2>
-        <button class="close_modal_btn" aria-label="Fermer formulaire de contact"><img
-            src="assets/icons/close.svg" /></button>
+        <button class="close_modal_btn" aria-label="Fermer formulaire de contact"><img src="assets/icons/close.svg"
+            alt="Close" /></button>
       </header>
       <form name="contact-form" action="photographer.html" method="post" aria-label="Envoyez un message">
         <div class="formData">
-          <label for="first">Prénom</label><br>
-          <input class="text-control" type="text" id="first" name="first" minlength="2" labelledby="#first" />
+          <label for="first">Prénom</label>
+          <input class="text-control" type="text" id="first" name="first" minlength="2" />
         </div>
         <div class="formData">
-          <label for="last">Nom</label><br>
+          <label for="last">Nom</label>
           <input class="text-control" type="text" id="last" name="last" />
         </div>
         <div class="formData">
-          <label for="email">E-mail</label><br>
+          <label for="email">E-mail</label>
           <input class="text-control" type="email" id="email" name="email" />
         </div>
         <div class="formData">
-          <label for="message">Votre message</label><br>
-          <textarea class="text-control" type="text" rows="7" id="message" name="message"></textarea>
+          <label for="message">Votre message</label>
+          <textarea class="text-control" rows="7" id="message" name="message"></textarea>
         </div>
         <input class="submit_button" type="submit" value="Envoyer" />
       </form>

@@ -10,7 +10,7 @@ export function photographerFactory(page, data) {
     if ("home" == page) {
         card = `<a href="photographer.html?userid=${id}" role="link"
                     aria-label="${name}. ${city} ${country}. ${tagline}. ${price} € par jour">
-                    <img alt="${name}" src="${picture}" width="320px" height="240px" />
+                    <img alt="${name}" src="${picture}" width="320" height="240" />
                     <h2>${name}</h2>
                 </a>
                 <aside>
@@ -27,7 +27,7 @@ export function photographerFactory(page, data) {
                 <p class="tagline">${tagline}</p>
             </div>
             <button class="contact_button">Contactez-moi</button>
-            <img alt="${name}" src="${picture}" width="320px" height="240px" />
+            <img alt="${name}" src="${picture}" width="320" height="240" />
         `
     } else {
         card = `<div>

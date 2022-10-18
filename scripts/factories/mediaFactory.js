@@ -33,23 +33,20 @@ export class mediaFactory {
         const container = document.createElement("div");
         container.classList.add("media_container");
         container.setAttribute("role", "button");
-        container.setAttribute("tabIndex", '0');
         container.setAttribute("aria-label", this._title + ", vue agrandie");
 
         let media = ``;
         if ("image" == this._mediaType) {
+            container.setAttribute("tabIndex", '0');
             media = document.createElement("img");
             media.setAttribute("src", this._mediaUrlThumbnail);
+            media.setAttribute("alt", this._title);
         } else if ("video" == this._mediaType) {
             media = document.createElement("video");
             media.setAttribute("src", this._mediaUrl);
             media.setAttribute("aria-disabled", "true");
-            media.setAttribute("tabindex", "-1");
+            container.setAttribute("tabIndex", '-1');
         }
-
-        media.setAttribute("witdh", "300px");
-        media.setAttribute("height", "300px");
-        media.setAttribute("alt", this._title);
 
         container.appendChild(media)
         card.appendChild(container);
@@ -77,13 +74,13 @@ export class mediaFactory {
     getMediaLightboxDOM() {
         const lightbox = document.createElement("div");
         lightbox.classList.add("modal");
-        lightbox.setAttribute("id", "merde");
         lightbox.setAttribute("role", "dialog");
         lightbox.setAttribute("aria-label", this._title);
 
         const closeBtn = document.createElement("button");
         closeBtn.setAttribute("tabindex", "3");
         closeBtn.setAttribute("aria-label", "Fermer Modale");
+        closeBtn.setAttribute("alt", "Close");
         closeBtn.classList.add("lightbox-btn", "lightbox-close");
         closeBtn.innerHTML = `<i class="fa-solid fa-2x fa-close"></i>`;
 

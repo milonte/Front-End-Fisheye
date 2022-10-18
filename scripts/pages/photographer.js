@@ -30,7 +30,6 @@ async function init() {
 
             allMedias = await getMedias(photographer.id).then(resp => resp.medias);
 
-
             displayPhotographer(photographer);
 
             allMedias.forEach(media => {
@@ -54,7 +53,7 @@ async function init() {
                 })
 
                 const currentOption = filtersSelect.querySelector(`option[value='${filtersSelect.value}']`);
-                currentOption.setAttribute("selected", true);
+                currentOption.setAttribute("selected");
             })
 
             /* Display contact Form */
@@ -120,7 +119,8 @@ function displayPageError() {
 }
 
 /**
- * 
+ * Enable / disable tabindex for some elements in main page content
+ * Used for media Lightbox and contact modal
  * @param {boolean} show 
  */
 function enableFocusMainElements(show = true) {
@@ -190,29 +190,16 @@ async function displayLightBox(media) {
     document.addEventListener("keydown", lightboxKeyboardEvent);
 
     /*
-    Lightbox navigation buttons listeners
-    On click or on press Enter if focused
+    Lightbox navigation click buttons listeners
     */
-    // Previous button
     mediaLightboxDOM.prevBtn.addEventListener("click", () => {
         changeLightBox("prev");
     })
-    mediaLightboxDOM.prevBtn.addEventListener("keydown", (event) => {
-        "Enter" == event.key ? changeLightBox("prev") : null;
-    })
-    // Next button
     mediaLightboxDOM.nextBtn.addEventListener("click", () => {
         changeLightBox("next");
     })
-    mediaLightboxDOM.nextBtn.addEventListener("keydown", (event) => {
-        "Enter" == event.key ? changeLightBox("next") : null;
-    })
-    // Close button
     mediaLightboxDOM.closeBtn.addEventListener("click", () => {
         closeLightBox();
-    })
-    mediaLightboxDOM.closeBtn.addEventListener("keydown", (event) => {
-        "Enter" == event.key ? closeLightBox() : null;
     })
 }
 
@@ -341,6 +328,10 @@ async function sortMedias() {
     })
 }
 
+/**
+ * Display total likes
+ * @param {Array} medias 
+ */
 async function displayTotalLikes(medias) {
     let likes = 0;
 
@@ -355,6 +346,10 @@ async function displayPrice(photographer) {
     photographPrice.innerHTML = photographer.price;
 }
 
+/**
+ * udpate likes counter on click
+ * @param {HTMLElement} like 
+ */
 function updateLikes(like) {
     if (like.classList.contains("liked")) {
         like.value--;
