@@ -28,6 +28,8 @@ async function init() {
             displayPageError();
         } else {
 
+            document.title = 'Fisheye - ' + photographer.name;
+
             allMedias = await getMedias(photographer.id).then(resp => resp.medias);
 
             displayPhotographer(photographer);
