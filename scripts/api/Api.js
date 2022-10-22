@@ -14,7 +14,7 @@ class Api {
     }
 }
 
-class PhotographerApi extends Api {
+export class PhotographerApi extends Api {
     /**
      * 
      * @param {string} url 
@@ -27,5 +27,35 @@ class PhotographerApi extends Api {
         const response = await this.get()
         return response.photographers
     }
+
+    async getPhotographer(id) {
+        const response = await this.get()
+        const photographer = response.photographers.find(photo => photo.id == id)
+        return photographer
+    }
+
 }
 
+export class MediaApi extends Api {
+    constructor(url) {
+        super(url)
+    }
+
+    async getMedias(id, sortBy = null) {
+        const response = await this.get()
+        const medias = response.media.filter(med => med.photographerId == id)
+
+        if (null !== sortBy) {
+            medias.sort((a, b) => {
+                if ("popular" == sortBy) {
+                    return b.likes - a.likes
+                } else if ("date" == sortBy) {
+                    return b.date - a.date
+                } else if ("title" == sortBy) {
+                    return a.title.localeCompare(b.title)
+                }
+            })
+        }
+        return medias
+    }
+}

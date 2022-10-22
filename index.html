@@ -2,7 +2,9 @@
 <html lang="fr">
 
 <head>
-  <link href="css/style.css" rel="stylesheet" type="text/css" />
+  <title>Fisheye</title>
+
+  <link rel="stylesheet" href="css/style.css">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Le meilleur des photographes indépendants">
@@ -14,17 +16,15 @@
 
 <body>
   <header>
-    <a href="index.html">
-      <img src="assets/images/logo.png" class="logo" alt="Fisheye Home page" width="200px" height="50px" />
+    <a href="index.html" title="Retour page accueil">
+      <img src="assets/images/logo.png" class="logo" alt="Fisheye Home page" width="200" height="50" />
     </a>
     <h1>Nos photographes</h1>
   </header>
   <main id="main">
-    <div class="photographer_section"></div>
+    <section class="photographer_section"></section>
   </main>
-  <script src="scripts/api/Api.js"></script>
-  <script src="scripts/factories/photographerFactory.js"></script>
-  <script src="scripts/pages/index.js"></script>
+  <script type="module" src="scripts/pages/index.js"></script>
 </body>
 
 </html>

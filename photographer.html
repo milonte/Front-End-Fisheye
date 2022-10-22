@@ -1,42 +1,86 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 
 <head>
-  <link href="css/style.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="css/style.css">
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Page Photographe">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
-  <title>Fisheye - photographe </title>
+  <title>Fisheye</title>
 </head>
 
 <body>
   <header>
-    <a href="index.html">
-      <img src="assets/images/logo.png" class="logo" alt="fisheye logo" />
+    <a href="index.html" title="Retour page accueil">
+      <img src="assets/images/logo.png" class="logo" alt="Fisheye Logo" width="200" height="50" />
     </a>
   </header>
   <main id="main">
-    <div class="photograph-header">
-      <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+    <div class="photograph-header"></div>
+
+    <div id="filters">
+      <label for="filters-select">Trier par :
+        <select id="filters-select">
+          <option value="popular" selected>&nbsp&nbsp Popularité</option>
+          <option value="date">&nbsp&nbsp Date</option>
+          <option value="title">&nbsp&nbsp Titre</option>
+        </select>
+
+      </label>
+
     </div>
+
+    <section class="photograph-medias"></section>
+
+    <section class="photograph-stats">
+      <span class="photograph-likes"></span>
+      <em class="fa-solid fa-heart"></em>
+      <span class="photograph-price"></span> € / jour
+    </section>
+
   </main>
-  <div id="contact_modal">
+
+  <div id="medias-lightbox" aria-hidden="true">
+  </div>
+
+  <div id="contact_modal" role="dialog" aria-hidden="true" aria-modal="true">
     <div class="modal">
       <header>
-        <h2>Contactez-moi</h2>
-        <img src="assets/icons/close.svg" onclick="closeModal()" />
+        <h2>Contactez-moi
+
+          <span class="contact-name"></span>
+        </h2>
+        <button class="close_modal_btn" aria-label="Fermer formulaire de contact"><img src="assets/icons/close.svg"
+            alt="Close" /></button>
       </header>
-      <form>
-        <div>
-          <label>Prénom</label>
-          <input />
+      <form name="contact-form" action="photographer.html" method="post" aria-label="Envoyez un message">
+        <div class="formData">
+          <label for="first">Prénom</label>
+          <input class="text-control" type="text" id="first" name="first" minlength="2" />
         </div>
-        <button class="contact_button">Envoyer</button>
+        <div class="formData">
+          <label for="last">Nom</label>
+          <input class="text-control" type="text" id="last" name="last" />
+        </div>
+        <div class="formData">
+          <label for="email">E-mail</label>
+          <input class="text-control" type="email" id="email" name="email" />
+        </div>
+        <div class="formData">
+          <label for="message">Votre message</label>
+          <textarea class="text-control" rows="7" id="message" name="message"></textarea>
+        </div>
+        <input class="submit_button" type="submit" value="Envoyer" />
       </form>
     </div>
   </div>
-  <script src="/scripts/pages/photographer.js"></script>
-  <script src="/scripts/utils/contactForm.js"></script>
+  <script type="module" src="/scripts/utils/contactForm.js"></script>
+  <script type="module" src="/scripts/pages/photographer.js"></script>
 </body>
 
 </html>
