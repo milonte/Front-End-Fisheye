@@ -45,7 +45,7 @@ export class mediaFactory {
             media = document.createElement("video");
             media.setAttribute("src", this._mediaUrl);
             media.setAttribute("aria-disabled", "true");
-            container.setAttribute("tabIndex", '-1');
+            media.setAttribute("tabIndex", '-1');
         }
 
         container.appendChild(media)
