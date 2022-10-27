@@ -55,7 +55,7 @@ async function init() {
                 })
 
                 const currentOption = filtersSelect.querySelector(`option[value='${filtersSelect.value}']`);
-                currentOption.setAttribute("selected");
+                currentOption.setAttribute("selected", true);
             })
 
             /* Display contact Form */
@@ -137,7 +137,6 @@ function enableFocusMainElements(show = true) {
         logo.removeAttribute("tabindex", "-1");
         mediaContainers.forEach(container => {
             container.removeAttribute("aria-disabled");
-            container.removeAttribute("tabindex", "-1");
             container.setAttribute("tabindex", "0");
         })
         contactBtn.removeAttribute("aria-disabled");
